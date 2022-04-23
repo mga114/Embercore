@@ -2,16 +2,19 @@ package renderer;
 
 import components.SpriteRenderer;
 import embercore.GameObject;
+import util.AssetPool;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Renderer {
+public class SpriteRenderController {
     private final int MAX_BATCH_SIZE = 1000;
-    private List<RenderBatch> batches;
+    private List<SpriteRenderBatch> batches;
+    
+    private static RenderConfig spriteRenderConfig = new RenderConfig(2, 4, 2, 1, AssetPool.getShader("assets/shaders/default.glsl"));
 
-    public Renderer() {
+    public SpriteRenderController() {
         this.batches = new ArrayList<>();
     }
 
@@ -24,7 +27,7 @@ public class Renderer {
 
     private void add (SpriteRenderer sprite) {
         boolean added = false;
-        for (RenderBatch batch : batches) {
+        for (SpriteRenderBatch batch : batches) {
             if (batch.hasRoom() && batch.zIndex() == sprite.gameObject.zIndex()) {
                 Texture tex = sprite.getTexture();
                 if (tex == null || (batch.hasTexture(tex) || batch.hasTextureRoom())) {
@@ -36,7 +39,7 @@ public class Renderer {
         }
 
         if (!added) {
-            RenderBatch batch = new RenderBatch(MAX_BATCH_SIZE, sprite.gameObject.zIndex());
+            SpriteRenderBatch batch = new SpriteRenderBatch(MAX_BATCH_SIZE, sprite.gameObject.zIndex(), spriteRenderConfig);
             batch.start();
             batches.add(batch);
             batch.addSprite(sprite);

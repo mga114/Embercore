@@ -4,19 +4,19 @@ import components.Sprite;
 import components.SpriteRenderer;
 import components.Spritesheet;
 import embercore.*;
-import gui.ConstraintType;
 import gui.GUIComponent;
 import gui.GUIConstraint;
 import org.joml.Vector2f;
-import renderer.GUIRenderer;
+import renderer.GUIRenderController;
 import util.AssetPool;
 
-import static gui.ConstraintType.PIXEL;
 import static gui.ConstraintType.RELATIVE;
 
 public class LevelEditorScene extends Scene {
     GameObject obj1;
+    GUIComponent comp;
     private Spritesheet sprites;
+    private final GUIRenderController guiRenderer = new GUIRenderController();
 
     public LevelEditorScene () {
 
@@ -31,11 +31,25 @@ public class LevelEditorScene extends Scene {
 
         obj1 = new GameObject("Object 1", new Transform(new Vector2f(100, 100), new Vector2f(256, 256)), 4);
         obj1.addComponent(new SpriteRenderer(new Sprite(AssetPool.getTexture("assets/images/blendImage1.png"))));
-        //this.addGameObjectToScene(obj1);
+        this.addGameObjectToScene(obj1);
 
         GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(200, 100), new Vector2f(256, 256)), 2);
         obj2.addComponent(new SpriteRenderer(new Sprite(AssetPool.getTexture("assets/images/blendImage2.png"))));
-        //this.addGameObjectToScene(obj2);
+        this.addGameObjectToScene(obj2);
+
+        GUIConstraint con = new GUIConstraint();
+        con.setX (RELATIVE, 0.05f);
+        con.setY(RELATIVE, 0.075f);
+        con.setWidth(RELATIVE, 0.5f);
+        con.setHeight(RELATIVE, 0.5f);
+
+        comp = new GUIComponent(con);
+
+        GUIComponent comp2 = new GUIComponent(con);
+        comp.addChild(comp2);
+
+        guiRenderer.add(comp);
+        guiRenderer.add(comp2);
 
     }
 
@@ -47,6 +61,8 @@ public class LevelEditorScene extends Scene {
 
     int placedX = 0;
     int placedY = 0;
+
+    float d = 0.05f;
 
     @Override
     public void update(float dt) {
@@ -62,32 +78,14 @@ public class LevelEditorScene extends Scene {
             }
         }
         //System.out.println("FPS: " + 1.0 / dt);
+        //comp.setX (RELATIVE, d);
+        d -= 0.0001f;
 
         for (GameObject go : this.gameObjects) {
             go.update(dt);
         }
 
         this.renderer.render();
-
-        GUIComponent comp = new GUIComponent();
-        comp.setX(RELATIVE, 0.05f);
-        comp.setY(RELATIVE, 0.075f);
-        comp.setWidth(RELATIVE, 0.5f);
-        comp.setHeight(RELATIVE, 0.5f);
-
-        GUIComponent comp2 = new GUIComponent();
-        comp.addChild(comp2);
-        comp2.setX(RELATIVE, 0.05f);
-        comp2.setY(RELATIVE, 0.075f);
-        comp2.setWidth(RELATIVE, 0.5f);
-        comp2.setHeight(RELATIVE, 0.5f);
-
-        GUIRenderer r = new GUIRenderer(comp);
-        r.start();
-        r.render();
-
-        GUIRenderer r2 = new GUIRenderer(comp2);
-        r2.start();
-        r2.render();
+        this.guiRenderer.render();
     }
 }
