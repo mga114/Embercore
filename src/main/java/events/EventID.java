@@ -1,6 +1,6 @@
 package events;
 
-public enum Event {
+public enum EventID {
     DRAW,
     UPDATE
 }

@@ -1,10 +1,11 @@
 import embercore.Window;
 
-import ecs.Test;
+
 
 public class Main {
     public static void test() {
-        Test.test();
+        ecs.Test.test();
+        events.Test.test();
     }
 
     public static void main(String[] args) {
