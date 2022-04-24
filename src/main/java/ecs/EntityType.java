@@ -9,9 +9,9 @@ import java.util.Objects;
 public class EntityType {
 
     private ArrayList<Group> groups;
-    private ArrayList<Class<? extends Component>> components;
+    private final ArrayList<Class<? extends Component>> components = new ArrayList<>();
 
-    private HashMap<Class<? extends Component>, Component> defaultValues;
+    private final HashMap<Class<? extends Component>, Component> defaultValues = new HashMap<>();
 
     private boolean hasCreated = false;
 

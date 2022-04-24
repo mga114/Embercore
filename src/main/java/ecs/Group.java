@@ -15,7 +15,8 @@ public class Group implements Iterable<Entity> {
 
     private static final ArrayList<Group> allGroups = new ArrayList<>();
 
-    public Group(Class<? extends Component>[] complist) {
+    @SafeVarargs
+    public Group(Class<? extends Component>... complist) {
         components = new HashSet<>(List.of(complist));
 
         allGroups.add(this);

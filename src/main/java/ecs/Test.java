@@ -57,13 +57,14 @@ public class Test {
             bothEnt.create();
         }
 
-        Group drawGroup = new Group(new Class[]{Position.class, Image.class});
+        Group drawGroup = new Group(Position.class, Image.class);
 
-        Group physicsGroup = new Group(new Class[]{Position.class, Velocity.class});
+        Group physicsGroup = new Group(Position.class, Velocity.class);
 
         assert drawGroup.size() == (nDraw + nBoth);
         assert physicsGroup.size() == (nPhys + nBoth);
 
+        System.out.println("Tests completed and passed.");
     }
 }
 
