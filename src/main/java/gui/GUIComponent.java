@@ -12,8 +12,8 @@ public class GUIComponent {
      protected ConstraintType[] types;
      private GUIConstraint constraint;
 
-     private Vector2f position;
-     private Vector2f size;
+     private Vector2f position = new Vector2f();
+     private Vector2f size = new Vector2f();
      private Vector4f color;
 
     public GUIComponent(GUIConstraint constraint) {
@@ -118,6 +118,7 @@ public class GUIComponent {
         switch (type) {
             case RELATIVE:
                 if (parent != null) {
+                    System.out.println("height: " + height);
                     this.size.y = parent.rawHeight() * height;
                 } else {
                     this.size.y = height;
@@ -134,8 +135,8 @@ public class GUIComponent {
     }
 
     protected void getValues () {
-        this.position = constraint.getPosition();
-        this.size = constraint.getSize();
+        this.position.set(constraint.getPosition());
+        this.size.set(constraint.getSize());
         types = constraint.getTypes();
 
         setX (types[0], position.x);
@@ -147,6 +148,7 @@ public class GUIComponent {
     private void updateChildren() {
         for (GUIComponent child : children) {
             child.getValues();
+            //System.out.println(child.getHeight());
         }
     }
 

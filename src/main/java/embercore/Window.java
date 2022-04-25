@@ -88,7 +88,7 @@ public class Window {
         //Configure GLFW
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
         glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE);
 
         //Create the window
@@ -107,11 +107,12 @@ public class Window {
         glfwSetKeyCallback(glfwWindow, KeyListener::keyCallback);
         //Window size callback
 
-        //glfwSetWindowSizeCallback(glfwWindow, (w, newWidth, newHeight) -> {
-        //    Window.setWidth(newWidth);
-        //    Window.setHeight(newHeight);
-        //    Window.currentScene.camera().adjustProjection();
-        //});
+        glfwSetWindowSizeCallback(glfwWindow, (w, newWidth, newHeight) -> {
+            glViewport(0, 0, newWidth, newHeight);
+            Window.setWidth(newWidth);
+            Window.setHeight(newHeight);
+            Window.currentScene.camera().adjustProjection();
+        });
 
         //Make the OpenGL context current
         glfwMakeContextCurrent(glfwWindow);

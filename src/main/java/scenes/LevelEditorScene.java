@@ -4,6 +4,7 @@ import components.Sprite;
 import components.SpriteRenderer;
 import components.Spritesheet;
 import embercore.*;
+import gui.Easing;
 import gui.GUIComponent;
 import gui.GUIConstraint;
 import org.joml.Vector2f;
@@ -11,6 +12,7 @@ import renderer.GUIRenderController;
 import util.AssetPool;
 
 import static gui.ConstraintType.RELATIVE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 
 public class LevelEditorScene extends Scene {
     GameObject obj1;
@@ -41,11 +43,17 @@ public class LevelEditorScene extends Scene {
         con.setX (RELATIVE, 0.05f);
         con.setY(RELATIVE, 0.075f);
         con.setWidth(RELATIVE, 0.5f);
-        con.setHeight(RELATIVE, 0.5f);
+        con.setHeight(RELATIVE, 0.9f);
+
+        GUIConstraint con2 = new GUIConstraint();
+        con2.setX (RELATIVE, 0.05f);
+        con2.setY(RELATIVE, 0.075f);
+        con2.setWidth(RELATIVE, 0.5f);
+        con2.setHeight(RELATIVE, 0.5f);
 
         comp = new GUIComponent(con);
 
-        GUIComponent comp2 = new GUIComponent(con);
+        GUIComponent comp2 = new GUIComponent(con2);
         comp.addChild(comp2);
 
         guiRenderer.add(comp);
@@ -62,8 +70,6 @@ public class LevelEditorScene extends Scene {
     int placedX = 0;
     int placedY = 0;
 
-    float d = 0.05f;
-
     @Override
     public void update(float dt) {
 
@@ -77,9 +83,10 @@ public class LevelEditorScene extends Scene {
                 placedY = (int) Math.floor(MouseListener.getOrthoY() / 32) * 32;
             }
         }
-        //System.out.println("FPS: " + 1.0 / dt);
-        //comp.setX (RELATIVE, d);
-        d -= 0.0001f;
+
+        if (KeyListener.isKeyPressed(GLFW_KEY_SPACE)) {
+            new Animation (Easing.easeOutQuint, comp.setX, )
+        }
 
         for (GameObject go : this.gameObjects) {
             go.update(dt);
