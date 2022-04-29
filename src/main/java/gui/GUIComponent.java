@@ -12,7 +12,7 @@ public class GUIComponent {
      protected ConstraintType[] types;
      private GUIConstraint constraint;
 
-     private Vector2f position = new Vector2f();
+     public Vector2f position = new Vector2f();
      private Vector2f size = new Vector2f();
      private Vector4f color;
 

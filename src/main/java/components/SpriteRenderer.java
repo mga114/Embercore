@@ -1,6 +1,11 @@
 package components;
 
-import embercore.Transform;
+import ecs.Component;
+import ecs.Entity;
+import ecs.Transform;
+import embercore.Window;
+import events.EventID;
+import events.Events;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 import renderer.Texture;
@@ -9,33 +14,41 @@ public class SpriteRenderer extends Component {
 
     private Vector4f color;
     private Sprite sprite;
+    public Entity entity;
+    public int zIndex;
 
     private Transform lastTransform;
     private boolean isDirty = false;
 
-    public SpriteRenderer (Vector4f color) {
+    public SpriteRenderer (Vector4f color, Entity entity, int zIndex) {
         this.color = color;
         this.sprite = new Sprite(null);
-        this.isDirty = true;
+        this.zIndex = zIndex;
+        init (entity);
     }
 
-    public SpriteRenderer(Sprite sprite) {
+    public SpriteRenderer(Sprite sprite, Entity entity, int zIndex) {
         this.sprite = sprite;
         this.color = new Vector4f(1, 1, 1, 1);
+        this.zIndex = zIndex;
+        init (entity);
+    }
+
+    private void init (Entity entity) {
+        this.entity = entity;
         this.isDirty = true;
-    }
 
-    @Override
-    public void start () {
-        this.lastTransform = gameObject.transform.copy();
-    }
+        Transform t = entity.get(Transform.class);
+        this.lastTransform = t.copy();
 
-    @Override
-    public void update(float dt) {
-        if (!this.lastTransform.equals(this.gameObject.transform)) {
-            this.gameObject.transform.copy(this.lastTransform);
-            isDirty = true;
-        }
+        Events.on(EventID.UPDATE, (dt) -> {
+            if (!this.lastTransform.equals(t)) {
+                t.copy(this.lastTransform);
+                isDirty = true;
+            }
+        });
+
+        Window.getScene().renderer.add(this);
     }
 
     public Vector4f getColor () {

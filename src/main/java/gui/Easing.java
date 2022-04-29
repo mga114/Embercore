@@ -1,8 +1,11 @@
 package gui;
 
+import gui.easing.Curve;
+import gui.easing.EaseOutQuint;
+
 public class Easing {
 
-    public static double easeOutQuint (double x) {
-        return 1.0 - Math.pow(1.0 - x, 5);
+    public static Curve easeOutQuint () {
+        return new EaseOutQuint();
     }
 }

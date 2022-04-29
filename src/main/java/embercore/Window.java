@@ -22,6 +22,7 @@ public class Window {
     private int width, height;
     private final String title;
     private long glfwWindow;
+    private static float dt;
 
     private static Window window = null;
 
@@ -138,7 +139,7 @@ public class Window {
     public void loop () {
         double frameStart = Time.getTime();
         double frameEnd;
-        float dt = -1.0f;
+        dt = -1.0f;
 
         while (!glfwWindowShouldClose(glfwWindow)) {
             //Poll events
@@ -175,5 +176,9 @@ public class Window {
 
     public static void setHeight (int height) {
         get().height = height;
+    }
+
+    public static float getDeltaTime () {
+        return dt;
     }
 }

@@ -1,6 +1,7 @@
 package renderer;
 
 import components.SpriteRenderer;
+import ecs.Transform;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
@@ -67,9 +68,10 @@ public class SpriteRenderBatch extends RenderBatch{
                 yAdd = 1.0f;
             }
 
+            Transform t = sprite.entity.get(Transform.class);
             //Load position
-            vertices[offset] = sprite.gameObject.transform.position.x + (xAdd * sprite.gameObject.transform.scale.x);
-            vertices[offset + 1] = sprite.gameObject.transform.position.y + (yAdd * sprite.gameObject.transform.scale.y);
+            vertices[offset] = t.position.x + (xAdd * t.scale.x);
+            vertices[offset + 1] = t.position.y + (yAdd * t.scale.y);
 
             //Load colour
             vertices[offset + 2] = color.x;

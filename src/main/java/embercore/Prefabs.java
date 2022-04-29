@@ -2,22 +2,24 @@ package embercore;
 
 import components.Sprite;
 import components.SpriteRenderer;
+import ecs.Entity;
+import ecs.EntityType;
+import ecs.Transform;
+import gui.Animator;
 import org.joml.Vector2f;
 
 public class Prefabs {
 
-    public static GameObject generateSpriteObject (Sprite sprite, int sizeX, int sizeY) {
-        GameObject obj = new GameObject ("Test Object", new Transform(new Vector2f(), new Vector2f(sizeX, sizeY)), 0);
-        SpriteRenderer renderer = new SpriteRenderer (sprite);
-        obj.addComponent(renderer);
-        return obj;
-    }
+    public static Entity generateSpriteEntity (Sprite sprite) {
+        EntityType type = new EntityType();
+        type.add(Transform.class);
+        type.add(Animator.class);
+        type.add(SpriteRenderer.class);
 
-    public static GameObject generateSpriteObject (Sprite sprite, Transform transform, int sizeX, int sizeY) {
-        GameObject obj = new GameObject ("Test Object", transform, 0);
-        SpriteRenderer renderer = new SpriteRenderer (sprite);
-        obj.addComponent(renderer);
-        return obj;
+        Entity e = type.create();
+        e.set(Transform.class, new Transform(new Vector2f(400.0f, 100.0f), new Vector2f(100.0f, 100.0f)));
+        e.set(SpriteRenderer.class, new SpriteRenderer(sprite, e, 1));
+        return e;
     }
 
 }

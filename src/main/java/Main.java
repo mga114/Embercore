@@ -4,8 +4,8 @@ import embercore.Window;
 
 public class Main {
     public static void test() {
-        ecs.Test.test();
-        events.Test.test();
+        //ecs.Test.test();
+        //events.Test.test();
     }
 
     public static void main(String[] args) {
