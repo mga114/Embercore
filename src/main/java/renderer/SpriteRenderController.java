@@ -19,7 +19,7 @@ public class SpriteRenderController {
 
     public SpriteRenderController() {
         this.batches = new ArrayList<>();
-        System.out.println("SRC");
+        //System.out.println("SRC");
         spriteGroup.onAdded((e) -> {
             System.out.println(e);
             SpriteRenderer spr = e.get(SpriteRenderer.class);
