@@ -73,6 +73,9 @@ public class EntityType {
                 g._addEntity(e);
             }
         }
+
+        addBuffer.clear();
+        removeBuffer.clear();
     }
 
     public static void updateEntityTypes(Group g) {

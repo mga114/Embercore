@@ -19,18 +19,25 @@ public class Transition {
         this.xDriverMethod = Easing.easeOutQuint();
     }
 
-    public void xDriver (Curve xDriver, float delta) {
+    public static Transition newTransition () {
+        return new Transition();
+    }
+
+    public Transition xDriver (Curve xDriver, float delta) {
         this.xDriverMethod = xDriver;
         this.xDelta = delta;
+        return this;
     }
 
-    public void yDriver (Method yDriver, float delta) {
+    public Transition yDriver (Method yDriver, float delta) {
         this.yDriverMethod = yDriver;
         this.yDelta = delta;
+        return this;
     }
 
-    public void alphaDriver (Method alphaDriver, float delta) {
+    public Transition alphaDriver (Method alphaDriver, float delta) {
         this.alphaDriverMethod = alphaDriver;
         this.alphaDelta = delta;
+        return this;
     }
 }

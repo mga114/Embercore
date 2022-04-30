@@ -1,5 +1,6 @@
 package embercore;
 
+import ecs.Handler;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 import scenes.LevelEditorScene;
@@ -61,7 +62,7 @@ public class Window {
     }
 
     public static Scene getScene () {
-        return Window.get().currentScene;
+        return Window.currentScene;
     }
 
     public void run () {
@@ -154,6 +155,8 @@ public class Window {
 
             //Swaps front and back buffers for the current window
             glfwSwapBuffers(glfwWindow);
+
+            Handler.flush();
 
             //Handle delta time calculations
             frameEnd = Time.getTime();

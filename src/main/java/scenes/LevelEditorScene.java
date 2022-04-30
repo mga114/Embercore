@@ -44,14 +44,14 @@ public class LevelEditorScene extends Scene {
         for (int i = 0; i < 5; i++) {
             //System.out.println("LES");
             Transition tt = new Transition();
-            tt.xDriver(Easing.easeOutBounce(), 100.0f);
+            tt.xDriver(Easing.easeOutQuint(), 100.0f);
             Entity et = Prefabs.generateSpriteEntity(sprites.getSprite(0), new Transform (new Vector2f(-50.0f, ((float) i * 70.0f) + 100.0f), new Vector2f(50.0f, 50.0f)));
             Animator a = et.get(Animator.class);
-            a.addAnimation(new Animation("Enter", tt, 2.0f, (float) i * 0.5f, et));
+            a.addAnimation(new Animation("Enter", tt, 1.0f, (float) i * 0.025f, et));
 
             Transition t1 = new Transition();
-            t1.xDriver(Easing.easeOutBounce(), -100.0f);
-            a.addAnimation(new Animation("Exit", t1, 2.0f, (float) i * 0.5f, et));
+            t1.xDriver(Easing.easeOutQuint(), -100.0f);
+            a.addAnimation(new Animation("Exit", t1, 1.0f, (float) i * 0.025f, et));
             entities.add(et);
         }
 
@@ -70,8 +70,6 @@ public class LevelEditorScene extends Scene {
 
     }
 
-    int placedX = 0;
-    int placedY = 0;
     boolean hasHappened = true;
 
     @Override
@@ -92,13 +90,9 @@ public class LevelEditorScene extends Scene {
             hasHappened = true;
         }
 
-        for (GameObject go : this.gameObjects) {
-            go.update(dt);
-        }
-
         Events.call(EventID.UPDATE, dt);
+        Events.call(EventID.RENDER, dt);
 
-        this.renderer.render();
         this.guiRenderer.render();
     }
 }

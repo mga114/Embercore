@@ -2,14 +2,14 @@ package scenes;
 
 import embercore.Camera;
 import embercore.GameObject;
-import renderer.SpriteRenderController;
+import renderer.SpriteRenderSystem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Scene {
 
-    public SpriteRenderController renderer = new SpriteRenderController();
+    public SpriteRenderSystem renderer = new SpriteRenderSystem();
     protected Camera camera;
     private boolean isRunning = false;
     protected List<GameObject> gameObjects = new ArrayList<>();
