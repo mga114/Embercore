@@ -1,6 +1,5 @@
 package ecs;
 
-
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -28,5 +27,3 @@ public class Entity {
         fields.put(comp, val);
     }
 }
-
-

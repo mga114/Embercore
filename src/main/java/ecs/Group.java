@@ -60,9 +60,7 @@ public class Group implements Iterable<Entity> {
         group.remove(ent);
     }
 
-    public void onAdded(EntityCallback cb) {
-        addedCallbacks.add(cb);
-    }
+    public void onAdded(EntityCallback cb) { addedCallbacks.add(cb); }
 
     public void onRemoved(EntityCallback cb) {
         removedCallbacks.add(cb);
