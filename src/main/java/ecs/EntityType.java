@@ -15,6 +15,9 @@ public class EntityType {
 
     private boolean hasCreated = false;
 
+    private static final ArrayList<Entity> addBuffer = new ArrayList<>();
+    private static final ArrayList<Entity> removeBuffer = new ArrayList<>();
+
     public void add(Class<? extends Component> component) {
         if (hasCreated) {
             throw new RuntimeException("Cannot add new components after the entity type has been created!");
@@ -49,12 +52,26 @@ public class EntityType {
 
     public void delete(Entity e) {
         // TODO: Add a flush buffer for this too. Deleting ents between frames is bad
-        for (var g: groups) {
+        for (Group g: groups) {
             g._removeEntity(e);
         }
     }
+
+    public static void flush() {
+        for (Entity e: removeBuffer) {
+            EntityType etype = e.getType();
+            for (Group g : etype.groups) {
+                g._removeEntity(e);
+            }
+        }
+
+        for (Entity e: addBuffer) {
+            EntityType etype = e.getType();
+            for (Group g: etype.groups) {
+                g._addEntity(e);
+            }
+        }
+    }
 }
-
-
 
 
