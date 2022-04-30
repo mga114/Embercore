@@ -1,4 +1,4 @@
-package gui;
+package animation;
 
 import embercore.Window;
 import events.EventID;

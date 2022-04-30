@@ -1,4 +1,4 @@
-package gui;
+package animation;
 
 import ecs.Component;
 import java.util.HashMap;

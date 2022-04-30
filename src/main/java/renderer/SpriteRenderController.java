@@ -1,9 +1,9 @@
 package renderer;
 
-import components.SpriteRenderer;
+import components.core.SpriteRenderer;
 import ecs.Entity;
-import ecs.Transform;
-import embercore.GameObject;
+import ecs.Group;
+import components.core.Transform;
 import util.AssetPool;
 
 import java.util.ArrayList;
@@ -13,18 +13,20 @@ import java.util.List;
 public class SpriteRenderController {
     private final int MAX_BATCH_SIZE = 1000;
     private List<SpriteRenderBatch> batches;
+    private static final Group spriteGroup = new Group(Transform.class, SpriteRenderer.class);
     
-    private static RenderConfig spriteRenderConfig = new RenderConfig(2, 4, 2, 1, AssetPool.getShader("assets/shaders/default.glsl"));
+    private static final RenderConfig spriteRenderConfig = new RenderConfig(2, 4, 2, 1, AssetPool.getShader("assets/shaders/default.glsl"));
 
     public SpriteRenderController() {
         this.batches = new ArrayList<>();
-    }
-
-    public void add (Entity entity) {
-        SpriteRenderer spr = entity.get(SpriteRenderer.class);
-        if (spr != null) {
-            add (spr);
-        }
+        System.out.println("SRC");
+        spriteGroup.onAdded((e) -> {
+            System.out.println(e);
+            SpriteRenderer spr = e.get(SpriteRenderer.class);
+            if (spr != null) {
+                add (spr);
+            }
+        });
     }
 
     public void add (SpriteRenderer sprite) {

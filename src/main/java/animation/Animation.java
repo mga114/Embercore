@@ -1,7 +1,7 @@
-package gui;
+package animation;
 
 import ecs.Entity;
-import ecs.Transform;
+import components.core.Transform;
 import org.joml.Vector2f;
 
 import java.util.Objects;

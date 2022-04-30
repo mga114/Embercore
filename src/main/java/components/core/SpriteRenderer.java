@@ -1,8 +1,7 @@
-package components;
+package components.core;
 
 import ecs.Component;
 import ecs.Entity;
-import ecs.Transform;
 import embercore.Window;
 import events.EventID;
 import events.Events;
@@ -48,7 +47,7 @@ public class SpriteRenderer extends Component {
             }
         });
 
-        Window.getScene().renderer.add(this);
+        //Window.getScene().renderer.add(this);
     }
 
     public Vector4f getColor () {

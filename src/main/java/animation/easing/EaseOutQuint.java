@@ -1,4 +1,4 @@
-package gui.easing;
+package animation.easing;
 
 public class EaseOutQuint implements Curve{
     @Override

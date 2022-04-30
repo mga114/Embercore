@@ -1,8 +1,9 @@
-package ecs;
+package components.core;
 
+import ecs.Component;
 import org.joml.Vector2f;
 
-public class Transform extends Component{
+public class Transform extends Component {
     public Vector2f position;
     public Vector2f scale;
 

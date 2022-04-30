@@ -1,9 +1,11 @@
 package scenes;
 
-import components.*;
+import animation.*;
+import animation.easing.Easing;
+import components.core.Spritesheet;
 import ecs.Entity;
 import ecs.EntityType;
-import ecs.Transform;
+import components.core.Transform;
 import embercore.*;
 import events.EventID;
 import events.Events;
@@ -12,7 +14,8 @@ import org.joml.Vector2f;
 import renderer.GUIRenderController;
 import util.AssetPool;
 
-import static gui.ConstraintType.RELATIVE;
+import java.util.ArrayList;
+
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 
@@ -20,6 +23,7 @@ public class LevelEditorScene extends Scene {
     GUIComponent comp;
     Entity e;
     Transition t;
+    ArrayList<Entity> entities = new ArrayList<>();
     EntityType testEntityType;
     private Spritesheet sprites;
     private final GUIRenderController guiRenderer = new GUIRenderController();
@@ -44,7 +48,7 @@ public class LevelEditorScene extends Scene {
         this.addGameObjectToScene(obj2);*/
 
         //region GUIComponents
-        GUIConstraint con = new GUIConstraint();
+        /*GUIConstraint con = new GUIConstraint();
         con.setX (RELATIVE, 0.05f);
         con.setY(RELATIVE, 0.075f);
         con.setWidth(RELATIVE, 0.5f);
@@ -62,21 +66,34 @@ public class LevelEditorScene extends Scene {
         comp.addChild(comp2);
 
         guiRenderer.add(comp);
-        guiRenderer.add(comp2);
+        guiRenderer.add(comp2);*/
         //endregion
 
-        t = new Transition();
+        for (int i = 0; i < 5; i++) {
+            System.out.println("LES");
+            Transition tt = new Transition();
+            tt.xDriver(Easing.easeOutBounce(), 100.0f);
+            Entity et = Prefabs.generateSpriteEntity(sprites.getSprite(0), new Transform (new Vector2f(-50.0f, ((float) i * 70.0f) + 100.0f), new Vector2f(50.0f, 50.0f)));
+            Animator a = et.get(Animator.class);
+            a.addAnimation(new Animation("Enter", tt, 2.0f, (float) i * 0.5f, et));
+
+            Transition t1 = new Transition();
+            t1.xDriver(Easing.easeOutBounce(), -100.0f);
+            a.addAnimation(new Animation("Exit", t1, 2.0f, (float) i * 0.5f, et));
+            entities.add(et);
+        }
+
+        /*t = new Transition();
         t.xDriver(Easing.easeOutQuint(), 100.0f);
 
         e = Prefabs.generateSpriteEntity(sprites.getSprite(0));
 
-        e.set(Animator.class, new Animator());
         Animator anim = e.get(Animator.class);
         anim.addAnimation(new Animation("Start", t, 2.0f, 0.0f, e));
 
         Transition t1 = new Transition();
         t1.xDriver(Easing.easeOutQuint(), -100.0f);
-        anim.addAnimation(new Animation("End", t1, 2.0f, 0.0f, e));
+        anim.addAnimation(new Animation("End", t1, 2.0f, 0.0f, e));*/
 
         AnimationSystem as = new AnimationSystem();
 
@@ -110,14 +127,20 @@ public class LevelEditorScene extends Scene {
                 placedY = (int) Math.floor(MouseListener.getOrthoY() / 32) * 32;
             }
         }*/
-        Animator anim = e.get(Animator.class);
+        //Animator anim = e.get(Animator.class);
         if (KeyListener.isKeyPressed(GLFW_KEY_SPACE) && hasHappened) {
-            anim.animate("Start");
+            for (Entity entity : entities) {
+                Animator anim = entity.get(Animator.class);
+                anim.animate("Enter");
+            }
             hasHappened = false;
         }
 
         if (KeyListener.isKeyPressed(GLFW_KEY_E) && !hasHappened) {
-            anim.animate("End");
+            for (Entity entity : entities) {
+                Animator anim = entity.get(Animator.class);
+                anim.animate("Exit");
+            }
             hasHappened = true;
         }
 

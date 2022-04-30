@@ -1,6 +1,7 @@
-package gui;
+package animation;
 
-import gui.easing.Curve;
+import animation.easing.Curve;
+import animation.easing.Easing;
 
 import java.lang.reflect.Method;
 
