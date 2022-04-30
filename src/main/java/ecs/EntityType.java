@@ -15,17 +15,27 @@ public class EntityType {
 
     private boolean hasCreated = false;
 
-    public void add(Class<? extends Component> component) {
+    private static boolean hasCreatedAny = false;
+
+    private static final ArrayList<EntityType> entityTypes = new ArrayList<>();
+
+    private static final ArrayList<Entity> addBuffer = new ArrayList<>();
+    private static final ArrayList<Entity> removeBuffer = new ArrayList<>();
+
+    public EntityType add(Class<? extends Component> component) {
         if (hasCreated) {
             throw new RuntimeException("Cannot add new components after the entity type has been created!");
         }
         components.add(component);
         groups = Group.getGroups(this);
+        entityTypes.add(this);
+        return this;
     }
 
-    public void add(Class<? extends Component> component, Component defaultVal) {
+    public EntityType add(Class<? extends Component> component, Component defaultVal) {
         add(component);
         defaultValues.put(component, defaultVal);
+        return this;
     }
 
     public ArrayList<Class<? extends Component>> getComponents() {
@@ -37,24 +47,48 @@ public class EntityType {
     }
 
     public Entity create() {
+        hasCreatedAny = true;
         hasCreated = true;
         Entity e = new Entity(this);
 
-        // TODO: Add a flush buffer for this. It's a terrible idea to create entities willy-nilly inbetween frames.
-        for (var g: groups) {
-            g._addEntity(e);
-        }
+        addBuffer.add(e);
         return e;
     }
 
     public void delete(Entity e) {
-        // TODO: Add a flush buffer for this too. Deleting ents between frames is bad
-        for (var g: groups) {
-            g._removeEntity(e);
+        removeBuffer.add(e);
+    }
+
+    public static void flush() {
+        for (Entity e: removeBuffer) {
+            EntityType etype = e.getType();
+            for (Group g : etype.groups) {
+                g._removeEntity(e);
+            }
+        }
+
+        for (Entity e: addBuffer) {
+            EntityType etype = e.getType();
+            for (Group g: etype.groups) {
+                g._addEntity(e);
+            }
+        }
+    }
+
+    public static void updateEntityTypes(Group g) {
+        /*
+         * This method should be called when a new group is created.
+         */
+        if (hasCreatedAny) {
+            throw new RuntimeException("Cannot create groups after Entities have been created!");
+        }
+
+        for (EntityType etype: entityTypes) {
+            if (g.shouldAccept(etype)) {
+                etype.groups.add(g);
+            }
         }
     }
 }
-
-
 
 

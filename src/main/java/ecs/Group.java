@@ -20,12 +20,15 @@ public class Group implements Iterable<Entity> {
         components = new HashSet<>(List.of(complist));
 
         allGroups.add(this);
+        
+        // We need to call this in-case entityTypes have already been defined.
+        EntityType.updateEntityTypes(this);
     }
 
-    private boolean shouldAccept(EntityType etype) {
+    public boolean shouldAccept(EntityType etype) {
         var comps = etype.getComponents();
-        for (var c: comps) {
-            if (!components.contains(c)) {
+        for (var c: components) {
+            if (!comps.contains(c)) {
                 return false;
             }
         }
